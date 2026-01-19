@@ -70,7 +70,7 @@ class SignalingServer:
         try:
             msg = SignalingMessage.from_json(message, peer_id)
             
-            if msg.type in ("offer", "answer", "ice-candidate"):
+            if msg.type in ("offer", "answer", "ice-candidate", "chat"):
                 # Route to specific peer
                 await self._route_to_peer(msg)
             elif msg.type == "get-peers":

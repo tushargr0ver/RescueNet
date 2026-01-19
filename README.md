@@ -66,14 +66,20 @@ uv sync
 uv run uvicorn main:app --host 0.0.0.0 --port 8000
 ```
 
-### 2. Start Frontend
+### 2. Start Frontend (Web UI)
 ```bash
 cd frontend
 bun install
 bun run dev --host
 ```
 
-### 3. Connect Devices
+### 3. Or Use CLI (No UI needed)
+```bash
+cd backend
+uv run python cli.py
+```
+
+### 4. Connect Devices
 Open `http://<your-ip>:5173` on devices connected to the **same network**.
 
 ---
