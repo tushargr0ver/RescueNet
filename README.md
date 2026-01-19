@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="screenshot.png" alt="RescueNet" width="700"/>
+  <img src="demo.webp" alt="RescueNet Demo" width="700"/>
 </p>
 
 <h1 align="center">📡 RescueNet</h1>
