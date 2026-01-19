@@ -53,8 +53,8 @@ class SignalingServer:
         self.connections[peer_id] = websocket
         print(f"[Signaling] Peer connected: {peer_id}")
         
-        # Send current peer list to the new connection
-        await self._send_peer_list(peer_id)
+        # Notify all clients about the new peer
+        await self.broadcast_peer_list()
     
     async def disconnect(self, peer_id: str):
         """Remove a peer connection"""
@@ -85,7 +85,7 @@ class SignalingServer:
     
     async def broadcast_peer_list(self):
         """Send updated peer list to all connected peers"""
-        for peer_id in self.connections:
+        for peer_id in list(self.connections.keys()):
             await self._send_peer_list(peer_id)
     
     async def _send_peer_list(self, peer_id: str):
@@ -94,8 +94,22 @@ class SignalingServer:
             return
         
         peers = []
+        
+        # Add mDNS-discovered peers (other backend servers)
         if self._get_peers_callback:
             peers = [p.to_dict() for p in self._get_peers_callback()]
+        
+        # Add connected clients (other CLI/browser users on same server)
+        for connected_id in self.connections:
+            if connected_id != peer_id:
+                # Check if this client is already in mDNS peers
+                if not any(p.get("peer_id") == connected_id for p in peers):
+                    peers.append({
+                        "peer_id": connected_id,
+                        "name": connected_id,  # Use peer_id as name for CLI clients
+                        "host": "localhost",
+                        "port": 8000
+                    })
         
         msg = SignalingMessage(
             type="peer-list",
