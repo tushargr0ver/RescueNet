@@ -1,6 +1,4 @@
-<p align="center">
-  <img src="demo.webp" alt="RescueNet Demo" width="700"/>
-</p>
+
 
 <h1 align="center">📡 RescueNet</h1>
 <p align="center">
